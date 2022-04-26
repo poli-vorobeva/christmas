@@ -1,0 +1,8 @@
+.settingsPage {
+    width: 100vw;
+    height: calc( 100vh - 50px);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    /*background-image: url('../../src/assets/bgSettings.png');*/
+}

@@ -1,0 +1,38 @@
+.toyCell {
+    width: 23%;
+    height: 200px;
+    min-width: 200px;
+    margin: 1px;
+    background: #2e33658a;
+    box-shadow: inset 1px 1px 80px 15px #f2eaeacc
+}
+
+.toyCell h5 {
+    color: #b51313;
+    text-transform: capitalize;
+    letter-spacing: 3%;
+    text-align: center;
+    text-shadow: 2px 2px 8px #1e6193;
+    line-height: 2rem;
+}
+
+.toyCellContent {
+    display: flex;
+    flex-flow: column nowrap;
+    padding: 10px;
+}
+
+.toyCellData {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+}
+
+.toyCellData img {
+    width: 80px;
+    height: 80px;
+    padding: 10px;
+    background: #a591837a;
+    border-radius: 50%;
+    box-shadow: inset 1px 0px 25px 1px #f3e7e7;
+}

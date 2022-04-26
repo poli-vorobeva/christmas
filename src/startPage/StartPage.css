@@ -1,0 +1,39 @@
+.startPage {
+    background: rebeccapurple;
+}
+
+.startPageCanvas {
+    filter: blur(2px);
+}
+
+.startPageCanvas,
+.startPageContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.startPageContainer {
+    width: 100vw;
+    height: 100vh;
+    background: rgba(255, 255, 255, 0.25);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.startPageContainer div {
+    width: 40vw;
+    background: #c91919;
+    border-radius: 15px;
+    /* line-height: 100%; */
+    text-align: center;
+    padding: 50px;
+    color: wheat;
+    text-transform: uppercase;
+    letter-spacing: 6px;
+    font-size: 21px;
+    mix-blend-mode: multiply;
+    box-shadow: inset 5px -5px 18px 9px #b50707;
+}

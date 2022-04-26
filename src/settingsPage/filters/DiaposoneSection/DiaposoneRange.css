@@ -1,0 +1,167 @@
+.diaposoneCountContainer,.diaposoneYearContainer{
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-evenly;
+    align-items: center;
+}
+.inputWrapper {
+    position: relative;
+    height: 20px;
+    --thrumb-color: #d9117e;
+}
+
+.inputWrapper div {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.inputWrapper .underLayer {
+    width: 100%;
+    height: 10px;
+    overflow: hidden;
+    background: rgba(152, 164, 226, 0.42);
+    position: absolute;
+    top: 5px;
+    left: 0;
+    position: relative;
+
+    border-radius: 10px;
+
+}
+.inputWrapper .underLayer .insideDiv{
+    position: absolute;
+    left: 0;
+    right: 0;
+    width: unset;
+    background: orange;
+    border-radius:10px;
+}
+
+input[type=range] {
+    height: 100%;
+    margin: 0;
+    -webkit-appearance: none;
+    width: 100%;
+    display: block;
+    background: transparent;
+}
+
+input[type=range]:focus {
+    outline: none;
+}
+.secondInputWrapper{
+    z-index: 1;
+}
+.firstInputWrapper{
+    z-index: 5;
+}
+
+.inputWrapper .secondThrumd {
+    width: 20px;
+    height: 20px;
+    background: green;
+    border-radius: 50%;
+    position: absolute;
+    top: 0;
+    transition: all ease 500ms;
+    /*left: calc(var(--containerWidth) - 20px);*/
+    z-index: 10;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 50%;
+    cursor: pointer;
+    animate: 0.2s;
+    background: transparent;
+    border-radius: 9px;
+    border: none;
+}
+
+input[type=range]::-webkit-slider-thumb {
+    /*position: absolute;*/
+    /*    top: 0;*/
+    margin-top: -5px;
+    border: none;
+    height: 20px;
+    width: 20px;
+    border-radius: 50%;
+    background: var(--thrumb-color);
+    cursor: pointer;
+    -webkit-appearance: none;
+    transition: all ease 500ms;
+}
+
+input[type=range]:focus::-webkit-slider-runnable-track {
+    background: transparent;
+}
+
+input[type=range]::-moz-range-track {
+    width: 100%;
+    height: 50%;
+    cursor: pointer;
+    animate: 0.2s;
+    background: transparent;
+    border-radius: 9px;
+    border: none;
+}
+
+input[type=range]::-moz-range-thumb {
+    /*position: absolute;*/
+    /*top: 0;*/
+    margin-top: -5px;
+    border: none;
+    height: 20px;;
+    width: 20px;
+    transition: all ease 500ms;
+    border-radius: 50%;
+    background: var(--thrumb-color);
+    cursor: pointer;
+}
+
+input[type=range]::-ms-track {
+    width: 100%;
+    height: 50%;
+    cursor: pointer;
+    animate: 0.2s;
+    background: transparent;
+    border-color: transparent;
+    color: transparent;
+}
+
+input[type=range]::-ms-fill-lower {
+    background: transparent;
+    border: none;
+    border-radius: 18px;
+}
+
+input[type=range]::-ms-fill-upper {
+    background: transparent;
+    border: none;
+    border-radius: 18px;
+}
+
+input[type=range]::-ms-thumb {
+    /*position: absolute;*/
+    /*top: 0;*/
+    margin-top: -5px;
+    margin-top: 1px;
+    border: none;
+    height: 20px;
+    width: 20px;
+    border-radius: 20px;
+    background: var(--thrumb-color);
+    cursor: pointer;
+    transition: all ease 500ms;
+}
+
+input[type=range]:focus::-ms-fill-lower {
+    background: transparent;
+}
+
+input[type=range]:focus::-ms-fill-upper {
+    background: transparent;
+}

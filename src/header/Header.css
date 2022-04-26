@@ -1,0 +1,23 @@
+header{
+    display: flex;
+    justify-content: center;
+}
+.header{
+    width: 100vw;
+    height: 50px;
+    background: rgba(201, 25, 25, 0.73);
+    position: absolute;
+    z-index: 5;
+}
+.headerNav{
+    width: 100px;
+    height: 50px;
+    border: none;
+    background: #c91919;
+    color: white;
+    letter-spacing: 2px;
+    transition: all ease-in 500ms;
+}
+.headerNav:hover{
+    box-shadow: inset -1px -5px 13px 3px #e3ccccdb;
+}

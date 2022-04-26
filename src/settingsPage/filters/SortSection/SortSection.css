@@ -1,0 +1,23 @@
+.sortSection form select {
+    width: 90%;
+    margin: 0 auto;
+    display: block;
+    border-radius: 20px;
+    background: #bd6666;
+    border: none;
+    outline: none;
+    color: white;
+    letter-spacing: 1px;
+    text-align: center;
+}
+
+.sortSection form button {
+    margin: 10px auto;
+    display: block;
+    border-radius: 3px;
+    outline: none;
+    border: none;
+    width: 90%;
+    letter-spacing: 1px;
+    color: #881507;
+}
