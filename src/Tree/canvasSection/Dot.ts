@@ -15,12 +15,15 @@ export class Dot {
   private vay: number;
   private lightness: number;
   public onChangeDot:(canvas:HTMLCanvasElement)=>void
+  private color: string;
 
-  constructor(ctx: CanvasRenderingContext2D, x: number, y: number) {
+  constructor(ctx: CanvasRenderingContext2D, x: number, y: number,color:string) {
     this.x = x
     this.y = y
     this.ctx = ctx
-
+    console.log(color)
+this.color=color==='blue'?'0,0,255':color==='red'?'255,0,0':'0,255,0'
+    console.log(this.color)
     this.size = Math.random() * 1 + 2
     this.speedY = Math.random() * 4
     this.speedX = Math.random() * 4 - 2
@@ -32,8 +35,8 @@ export class Dot {
     this.vax = Math.random() * 0.6 - 0.3
     this.vay = Math.random() * 0.6 - 0.3
     this.lightness = 10
-    this.ctx.fillStyle = `rgba(${Math.random()*100+150},${Math.random()*100+150},${Math.random()*100+150},0.65)`
-
+   // this.ctx.fillStyle = `rgba(${Math.random()*100+150},${Math.random()*100+150},${Math.random()*100+150},0.65)`
+this.ctx.fillStyle=`rgba(${this.color})`
     this.angle = 0
     this.ctx.shadowOffsetX = 0
     this.ctx.shadowOffsetY = 5

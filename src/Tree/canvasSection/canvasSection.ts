@@ -24,11 +24,14 @@ export class CanvasSection extends Control {
   private offsetTreeCanvasHeight: number;
   private createGarland: CreateGarland;
   public garlandCoordinates: { y: number; x: number[] }[];
+  private isTurnGirland: boolean;
+  private coordsForGirland: { y: number; x: number[] }[];
 
   constructor(parentNode: HTMLElement) {
     super(parentNode);
     this.parentNode = parentNode
     this.toysOnTree = []
+    this.isTurnGirland=false
     this.node.classList.add('canvasSection')
     this.canvasSection = new Control(this.node, 'canvas', 'canvas')
     this.canvasSection.node.width = this.canvasWidth = this.canvasSection.node.getBoundingClientRect().width
@@ -49,7 +52,6 @@ export class CanvasSection extends Control {
     this.canvasBackground = null
     this.canvasTree = null
     this.maskCanvas = null
-    this.createGarland = new CreateGarland(this.canvasSection.node.width, this.canvasSection.node.height)
     this.node.ondragover = (e) => {
       e.preventDefault()
     }
@@ -108,11 +110,22 @@ export class CanvasSection extends Control {
   }
 
   smallFoo() {
-    const garCanvas = this.createGarland.newCanvas
-    this.ctx.clearRect(0, 0, garCanvas.width, garCanvas.height)
-    this.drawBackground()
-    this.drawTree()
-    this.ctx.drawImage(garCanvas, 0, 0)
+
+  //  const garCanvas = this.createGarland.newCanvas
+  //  this.ctx.clearRect(0, 0, garCanvas.width, garCanvas.height)
+
+    if(this.isTurnGirland){
+
+      const garCanvas = this.createGarland.newCanvas
+      this.ctx.clearRect(0, 0, garCanvas.width, garCanvas.height)
+      this.drawBackground()
+      this.drawTree()
+      this.ctx.drawImage(garCanvas, 0, 0)
+    }else{
+      this.drawBackground()
+      this.drawTree()
+    }
+   // this.ctx.drawImage(garCanvas, 0, 0)
 
     requestAnimationFrame(() => {
       this.drawBackground()
@@ -157,12 +170,13 @@ export class CanvasSection extends Control {
 
   public setCanvasBackground(bgImageIndex: string) {
     this.createImage(`./public/assets/bg/${bgImageIndex}.jpg`,
-      this.canvasWidth, this.canvasHeight, this.bgOnload)
+      this.canvasWidth, this.canvasHeight, this.bgOnload.bind(this))
   };
 
   public setCanvasTree(treeImageIndex: string) {
     this.createImage(`./public/assets/tree/${treeImageIndex}.png`,
-      this.canvasWidth * 0.7, this.canvasHeight * 0.7, this.treeOnload)
+      this.canvasWidth * 0.7, this.canvasHeight * 0.7,
+        this.treeOnload.bind(this))
   }
   createImage(url: string, width: number, height: number, callcack: (img: HTMLImageElement) => void) {
     const image = new Image()
@@ -183,7 +197,8 @@ export class CanvasSection extends Control {
     }
   }
   treeOnload(treeImage: HTMLImageElement) {
-    this.maskCanvas = new MaskCanvas(this.node, treeImage, this.canvasWidth * 0.7, this.canvasHeight * 0.7)
+    this.maskCanvas = new MaskCanvas(this.node, treeImage,
+        this.canvasWidth * 0.7, this.canvasHeight * 0.7)
     const arr = this.maskCanvas.getGarlandCoords()
     const newCoords = arr.map((el) => {
       el.y = el.y + Math.floor(this.offsetTreeCanvasHeight)
@@ -191,7 +206,7 @@ export class CanvasSection extends Control {
       el.x[1] = el.x[1] + Math.floor(this.offsetTreeCanvasWidth)
       return el
     })
-    this.createGarland.setCoords(newCoords)
+    this.coordsForGirland = newCoords
     this.canvasTree = {
       startX: this.canvasWidth * 0.2 / 2, startY: this.canvasHeight * 0.2 / 2, image: treeImage,
       width: this.canvasWidth * 0.8, height: this.canvasHeight * 0.8
@@ -208,6 +223,18 @@ export class CanvasSection extends Control {
     this.ctx.globalCompositeOperation = 'source-over'
     this.canvasTree && this.ctx.drawImage(this.canvasTree.image, this.canvasTree.startX, this.canvasTree.startY,
       this.canvasTree.width, this.canvasTree.height)
+  }
+
+  turnOnGirland(color: string) {
+    this.isTurnGirland=true
+    this.createGarland = new CreateGarland(this.canvasSection.node.width,
+        this.canvasSection.node.height,color)
+    this.createGarland.setCoords(this.coordsForGirland)
+  }
+
+  offGirland() {
+    this.createGarland=null
+    this.isTurnGirland=false
   }
 }
 

@@ -8,23 +8,21 @@ export class CreateGarland {
   private x: number;
   private y: number;
   private c: number;
+    private color: string;
 
-  constructor(width:number,height:number) {
+  constructor(width:number,height:number,color:string) {
+      this.color=color
     this.newCanvas = document.createElement('canvas')
     this.newCanvas.width = width
     this.newCanvas.height = height
-    console.log('top',this.newCanvas.width,this.newCanvas.height)
     this.newCtx = this.newCanvas.getContext('2d')
     this.newCtx.globalCompositeOperation='destination-over'
-  //  this.newCtx.fillStyle = 'rgba(217,217,38,0.97)'
- //  this.newCtx.fillRect(0, 0, this.newCanvas.width, this.newCanvas.height)
   }
   draw(){
     for (let i = 1; i <this.garlandCoordinates.length-1; i++) {
      if (!this.garlandCoordinates[i + 1]) return;
       let startX = this.garlandCoordinates[i].x[0]
       let startY = this.garlandCoordinates[i].y
-     // new Dot(this.newCtx,startX,startY).update(startX,startY)
       const xDistance = this.garlandCoordinates[i + 1].x[1] - this.garlandCoordinates[i].x[0]
       const steps = Math.ceil(xDistance / 50)
       const xStep = xDistance / steps
@@ -42,7 +40,7 @@ export class CreateGarland {
         }
 
       for(let i=0;i<7;i++){
-        new Dot(this.newCtx,startX,startY).update(startX,startY)
+        new Dot(this.newCtx,startX,startY,this.color).update(startX,startY)
       }
         currentStep++
       }
