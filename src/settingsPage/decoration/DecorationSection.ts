@@ -12,6 +12,7 @@ export class DecorationSection extends Control {
   }
 
   public drawSection(toyData: IToyData[]) {
+    console.log('toyData',toyData)
     this.node.innerHTML = ''
     toyData.forEach(d => {
       const toy = new ToyItem(this.node, d)

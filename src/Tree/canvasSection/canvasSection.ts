@@ -26,7 +26,9 @@ export class CanvasSection extends Control {
   public garlandCoordinates: { y: number; x: number[] }[];
   private isTurnGirland: boolean;
   private coordsForGirland: { y: number; x: number[] }[];
-
+  onDroppedToy:(toyIndex:string)=>void
+  private treeCanvasWidth: number;
+  private treeCanvasHeight: number;
   constructor(parentNode: HTMLElement) {
     super(parentNode);
     this.parentNode = parentNode
@@ -34,19 +36,22 @@ export class CanvasSection extends Control {
     this.isTurnGirland=false
     this.node.classList.add('canvasSection')
     this.canvasSection = new Control(this.node, 'canvas', 'canvas')
-    this.canvasSection.node.width = this.canvasWidth = this.canvasSection.node.getBoundingClientRect().width
-    this.canvasSection.node.height = this.canvasHeight = this.canvasSection.node.getBoundingClientRect().height
+    this.canvasSection.node.width = this.canvasWidth = 350//this.canvasSection.node.getBoundingClientRect().width
+    this.canvasSection.node.height = this.canvasHeight = 500 //this.canvasSection.node.getBoundingClientRect().height
+    console.log("mainCanvas w",this.canvasSection.node.width,'h',this.canvasSection.node.height)
     this.canvasSection.node.onclick = (e) => {
       console.log(e.offsetX, e.offsetY)
     }
     this.prevPosX
     this.prevPosX
+    this.treeCanvasWidth=this.canvasWidth*0.7
+    this.treeCanvasHeight=this.canvasHeight*0.7
+    this.offsetTreeCanvasWidth = this.canvasWidth * 0.3 / 2
+    this.offsetTreeCanvasHeight = this.canvasHeight * 0.3 / 2
     this.mouseDownHandlerBinded = this.mouseDownHandler.bind(this)
     this.moveHandlerBinded = this.moveHandler.bind(this)
     this.setCanvasBackground('1')
     this.setCanvasTree('1')
-    this.offsetTreeCanvasWidth = this.canvasWidth * 0.2 / 2
-    this.offsetTreeCanvasHeight = this.canvasHeight * 0.2 / 2
     this.canvasSection.node.addEventListener('mousedown', this.mouseDownHandlerBinded)
     this.ctx = this.canvasSection.node.getContext('2d')
     this.canvasBackground = null
@@ -55,16 +60,24 @@ export class CanvasSection extends Control {
     this.node.ondragover = (e) => {
       e.preventDefault()
     }
+    //todo drawtoys by their sizes
     this.node.ondrop = (e) => {
-      const { x, y } = this.getCursorPosition(e, this.node)
+      const { x, y } = this.getCursorPosition(e, this.canvasSection.node)
+      console.log('$$',x,y)
+      console.log(this.canvasTree)
       if (!this.isOverCanvas(x - this.canvasTree.startX, y - this.canvasTree.startY)) return
       else {
+        console.log('overCanvas')
         if (this.maskCanvas.checkPixel(x - this.canvasTree.startX, y - this.canvasTree.startY)) {
+          console.log("underTreeMask",e.dataTransfer.getData('el'))
+          this.onDroppedToy(e.dataTransfer.getData('el'))
+          console.log("TOYcoords",x - 25,y - 25)
           const toy = new ToyImage(this.node, {
             x: x - 25, y: y - 25,
             num: +e.dataTransfer.getData('el'), size: 50
           })
           toy.render(this.ctx)
+         console.log('drap')
           this.toysOnTree.push(toy)
         }
       }
@@ -74,6 +87,7 @@ export class CanvasSection extends Control {
   mouseDownHandler(e: MouseEvent) {
     this.prevPosX = this.getCursorPosition(e, this.node).x
     this.prevPosY = this.getCursorPosition(e, this.node).y
+    console.log("TOYonDown",this.toysOnTree)
     this.canvasSection.node.addEventListener('mousemove', this.moveHandlerBinded)
   }
 
@@ -87,10 +101,14 @@ export class CanvasSection extends Control {
     this.drawScene()
     this.canvasSection.node.onmouseup = (e) => {
       const { x, y } = this.getCursorPosition(e, this.canvasSection.node)
+      console.log('coords----------',x,y)
       if (this.isOverCanvas(x - 50, y - 50)) {
+        console.log('overCanvas')
         const canvasX = x - this.canvasTree.startX
         const canvasY = y - this.canvasTree.startY
-        if (!this.maskCanvas.checkPixel(canvasX, canvasY)) {
+       if (!this.maskCanvas.checkPixel(canvasX, canvasY)) {
+          console.log(e)
+          console.log(this.getCurrentToy(e))
           this.deleteToy(this.getCurrentToy(e))
           //TODO даляются все одинаковые элементы
           //попадают элнменты в диапозоне
@@ -105,8 +123,8 @@ export class CanvasSection extends Control {
     // console.log(x,y)
     return (x >= this.canvasTree.startX
       && x <= this.canvasTree.startX + this.canvasTree.width
-      || y >= this.canvasTree.startY
-      || y <= this.canvasTree.startY + this.canvasTree.height)
+      && y >= this.canvasTree.startY
+      && y <= this.canvasTree.startY + this.canvasTree.height)
   }
 
   smallFoo() {
@@ -136,13 +154,13 @@ export class CanvasSection extends Control {
       })
     })
   }
-
   drawScene() {
     this.ctx.clearRect(0, 0, this.canvasWidth, this.canvasHeight)
     this.smallFoo()
   }
 
   deleteToy(delToy: ToyImage) {
+    console.log(delToy,'@@')
     this.toysOnTree = this.toysOnTree.filter(toy => toy.id !== delToy.id)
     this.drawScene()
   }
@@ -174,17 +192,19 @@ export class CanvasSection extends Control {
   };
 
   public setCanvasTree(treeImageIndex: string) {
+    console.log('tree---')
     this.createImage(`./public/assets/tree/${treeImageIndex}.png`,
-      this.canvasWidth * 0.7, this.canvasHeight * 0.7,
+      this.treeCanvasWidth, this.treeCanvasHeight,
         this.treeOnload.bind(this))
   }
-  createImage(url: string, width: number, height: number, callcack: (img: HTMLImageElement) => void) {
+  createImage(url: string, width: number, height: number, callback: (img: HTMLImageElement) => void) {
     const image = new Image()
     image.src = url
     image.width = width
     image.height = height
+    console.log('image',width,height)
     image.onload = () => {
-      callcack(image)
+      callback(image)
     }
   }
   bgOnload(canvasImage: HTMLImageElement) {
@@ -197,8 +217,11 @@ export class CanvasSection extends Control {
     }
   }
   treeOnload(treeImage: HTMLImageElement) {
-    this.maskCanvas = new MaskCanvas(this.node, treeImage,
-        this.canvasWidth * 0.7, this.canvasHeight * 0.7)
+    // this.maskCanvas = new MaskCanvas(this.node, treeImage,
+    //     this.canvasWidth * 0.7, this.canvasHeight * 0.7)
+    console.log('maskCanvas---',this.treeCanvasWidth,this.treeCanvasHeight)
+     this.maskCanvas = new MaskCanvas(this.node, treeImage,
+         this.treeCanvasWidth, this.treeCanvasHeight)
     const arr = this.maskCanvas.getGarlandCoords()
     const newCoords = arr.map((el) => {
       el.y = el.y + Math.floor(this.offsetTreeCanvasHeight)
@@ -208,8 +231,8 @@ export class CanvasSection extends Control {
     })
     this.coordsForGirland = newCoords
     this.canvasTree = {
-      startX: this.canvasWidth * 0.2 / 2, startY: this.canvasHeight * 0.2 / 2, image: treeImage,
-      width: this.canvasWidth * 0.8, height: this.canvasHeight * 0.8
+      startX: this.offsetTreeCanvasWidth, startY: this.offsetTreeCanvasHeight, image: treeImage,
+      width: this.treeCanvasWidth, height: this.treeCanvasHeight
     }
     this.drawScene()
   }

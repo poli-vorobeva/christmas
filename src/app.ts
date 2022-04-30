@@ -44,7 +44,6 @@ export class App extends Control {
   }
   changePage(page: string) {
     if (page === 'settings') {
-      console.log(this.treePage)
       this.toggleNavPage(this.treePage,this.startPage)
       this.settingsPage = new SettingsPage(this.node, this.filtersModel,this.toysObj)
       this.settingsPage.addFavorite = (toyData: IToyData) => {

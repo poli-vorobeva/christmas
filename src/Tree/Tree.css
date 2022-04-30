@@ -16,8 +16,10 @@
     align-items: center;
 }
 .canvas{
-    width: 80%;
-    height: calc( 95vh - 50px);
+    width: 350px;
+    height: 500px;
+    /*width: 80%;*/
+    /*height: calc( 95vh - 50px);*/
     margin: 0 auto;
 }
 .chooseContainer {

@@ -46,7 +46,7 @@ export class FiltersModel {
         средний: false, большой: false
       }
     }
-    this.favorites = []
+    this.favorites = this.currentToysData.filter(toy=>toy.favorite===true)
   }
 
   public addFavorite(toy: IToyData) {

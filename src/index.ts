@@ -32,6 +32,7 @@ const toysObj = function () {
   )
 
 }
+
 function getAsyncImages(array: string[]): Promise<HTMLImageElement[]> {
   return new Promise((res, rej) => {
     const pr = function (adr: string): Promise<HTMLImageElement> {
@@ -45,10 +46,9 @@ function getAsyncImages(array: string[]): Promise<HTMLImageElement[]> {
     }
     const prAll = async function processArray() {
       const promises = array.map(name => pr(name));
-      return await Promise.all(promises);
+     return await Promise.all(promises);
     }
     const data = prAll()
-    console.log(data)
     res(data)
   })
 }
@@ -57,6 +57,7 @@ const promiseAllData=async ():Promise<any[]>=>{
   return await Promise.all(prAr)
 }
 promiseAllData().then((d:PreloadData)=>{
+  console.log('$$$',)
   const app = new App(document.body,d)
 })
 //document.body.append(generateSnowFlake())

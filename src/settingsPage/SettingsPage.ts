@@ -17,7 +17,6 @@ export class SettingsPage extends Control {
     document.querySelector('body').style.backgroundImage="url('./public/assets/bgSettings.png')"
     this.filtersModel = filtersModel
     this.filtersModel.onRedrawToys = (toysArray) => {
-      
       this.decorationSection.drawSection(toysArray)
     }
     this.filtersContainer = new FilterContainer(this.node)
