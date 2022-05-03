@@ -3,13 +3,13 @@ import {FiltersModel} from "../settingsPage/filters/FiltersModel";
 import {ChooseSection} from "./chooseSection/chooseSection";
 import {CanvasSection} from "./canvasSection/canvasSection";
 import {ToysSection} from "./toysSection/toysSection";
-import './Tree.css'
+import './GamePage.css'
 
 export class TreePage extends Control {
     private canvasSection: CanvasSection;
     private toysSection: ToysSection;
     private chooseSection: ChooseSection;
-//todo remove fro m tree
+//todo remove from tree
     constructor(parentNode: HTMLElement, filtersModel: FiltersModel) {
         super(parentNode, 'div', 'treePage-container')
         console.log(filtersModel)

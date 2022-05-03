@@ -1,7 +1,7 @@
 import Control from "./common/controll";
 import { Header } from "./header/Header";
 import { SettingsPage } from "./settingsPage/SettingsPage";
-import { TreePage } from "./Tree/Tree";
+import { TreePage } from "./Tree/GamePage";
 import { FiltersModel } from "./settingsPage/filters/FiltersModel";
 import { IToyData } from "./interfaces";
 import { StartPage } from "./startPage/StartPage";
