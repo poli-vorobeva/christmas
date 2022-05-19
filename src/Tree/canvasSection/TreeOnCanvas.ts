@@ -1,6 +1,7 @@
 import {ToyImage} from "../ToyImage";
 import {MaskCanvas} from "./MaskCanvas";
 import {ICanvasImageObject} from "../../interfaces";
+import {FiltersModel} from "../../settingsPage/filters/FiltersModel";
 
 export class TreeOnCanvas{
     toysOnTree: ToyImage[]
@@ -15,10 +16,17 @@ export class TreeOnCanvas{
     onDroppedToy:(toyIndex:string)=>void
     //private coordsForGirland: { y: number; x: number[] }[];
     private parentEl: HTMLElement;
-    constructor(parentEl:HTMLElement,parentWidth:number,parentHeight:number) {
+    private filtersModel: FiltersModel;
+    private sizes:Record<string,number>
+    constructor(parentEl:HTMLElement,parentWidth:number,parentHeight:number,filtersModel: FiltersModel) {
+        this.filtersModel=filtersModel
+        this.sizes={
+            'средний':40,
+            'большой':50,
+           'маленький':30
+        }
         this.toysOnTree = []
         this.parentEl=parentEl
-        console.log(this.parentEl)
         this.treeCanvasWidth=parentWidth*0.7
         this.treeCanvasHeight=parentHeight*0.7
         this.offsetTreeCanvasWidth = parentWidth * 0.3 / 2
@@ -33,8 +41,7 @@ export class TreeOnCanvas{
         })
     }
     getCurrentToy(x:number,y:number){
-        console.log(this.toysOnTree)
-        return this.toysOnTree.filter(toy => {
+       return this.toysOnTree.filter(toy => {
             if (x > toy.startX && x < toy.startX + 50
                 && y > toy.startY && y < toy.startY + 50) {
                  return true
@@ -55,10 +62,11 @@ export class TreeOnCanvas{
             if (this.maskCanvas.checkPixel(x - this.canvasTree.startX, y - this.canvasTree.startY)) {
                 //"underTreeMask",eventData)
                 this.onDroppedToy(eventData)
-               // console.log("TOYcoords",x - 25,y - 25)
+                const toySize = this.filtersModel.toysData.find(el=>el.num==eventData).size
                 const toy = new ToyImage(parent, {
-                    x: x - 25, y: y - 25,
-                    num: +eventData, size: 50
+                    x: x - (this.sizes[toySize]/2), y: y - (this.sizes[toySize]/2),
+
+                    num: +eventData, size: this.sizes[toySize]
                 })
                 toy.render(ctx)
               //  console.log('drap')
@@ -79,8 +87,6 @@ export class TreeOnCanvas{
             el.x[1] = el.x[1] + Math.floor(this.offsetTreeCanvasWidth)
             return el
         })
-        //todo draw by toys sizes
-        //todo count of toys
         this.onGetGarlandCoords(newCoords)
        // this.coordsForGirland = newCoords
         this.canvasTree = {

@@ -9,7 +9,6 @@ export class TreePage extends Control {
     private canvasSection: CanvasSection;
     private toysSection: ToysSection;
     private chooseSection: ChooseSection;
-//todo remove from tree
     constructor(parentNode: HTMLElement, filtersModel: FiltersModel) {
         super(parentNode, 'div', 'treePage-container')
         console.log(filtersModel)
@@ -24,12 +23,11 @@ export class TreePage extends Control {
         this.chooseSection.setCanvasTree = (tr: string) => {
             this.canvasSection.setCanvasTree(tr)
         }
-        this.canvasSection = new CanvasSection(this.node)
+        this.canvasSection = new CanvasSection(this.node,filtersModel)
         this.canvasSection.onChangeToysCount=(toyIndex:string,action:string)=>{
             this.toysSection.changeToyCount(toyIndex,action)
         }
         this.canvasSection.onDroppedToy=(toyIndex)=>{
-            //todo dec count in dataobject,cuttentData, tree-toySection
         }
         this.chooseSection.setCanvasBackground = (bgImageIndex) => {
             this.canvasSection.setCanvasBackground(bgImageIndex)

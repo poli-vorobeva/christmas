@@ -5,6 +5,7 @@ import { MaskCanvas } from "./MaskCanvas";
 import { CreateGarland } from "./createGirland";
 import { canvasS, canvTree } from "../../garlandCanvas";
 import {TreeOnCanvas} from "./TreeOnCanvas";
+import {FiltersModel} from "../../settingsPage/filters/FiltersModel";
 
 
 export class CanvasSection extends Control {
@@ -22,10 +23,9 @@ export class CanvasSection extends Control {
   private createGarland: CreateGarland;
   public garlandCoordinates: { y: number; x: number[] }[];
   private isTurnGirland: boolean;
-  private coordsForGirland: { y: number; x: number[] }[];
    onDroppedToy:(toyIndex:string)=>void
   private treeOnCanvas: TreeOnCanvas;
-  constructor(parentNode: HTMLElement) {
+  constructor(parentNode: HTMLElement,filtersModel: FiltersModel) {
     super(parentNode);
     this.parentNode = parentNode
 
@@ -40,7 +40,7 @@ export class CanvasSection extends Control {
     this.prevPosX
     this.prevPosX
     //console.log(this.node,'##')
-    this.treeOnCanvas=new TreeOnCanvas(this.node,this.canvasWidth,this.canvasHeight)
+    this.treeOnCanvas=new TreeOnCanvas(this.node,this.canvasWidth,this.canvasHeight,filtersModel)
     this.treeOnCanvas.onChangeToysCount=(index,action)=>{
       this.onChangeToysCount(index,action)
     }
@@ -61,7 +61,6 @@ export class CanvasSection extends Control {
     this.node.ondragover = (e) => {
       e.preventDefault()
     }
-    //todo drawtoys by their sizes
     this.node.ondrop = (e) => {
       const { x, y } = this.getCursorPosition(e, this.canvasSection.node)
       const eventData=e.dataTransfer.getData('el')
@@ -119,13 +118,13 @@ export class CanvasSection extends Control {
     this.smallFoo()
   }
 
-  deleteToy(delToy: ToyImage) {
-    this.onChangeToysCount(''+delToy.index,'inc')
-    this.treeOnCanvas.deleteToyFromTree(delToy)
-    // console.log(delToy,'@@')
-    // this.toysOnTree = this.toysOnTree.filter(toy => toy.id !== delToy.id)
-    this.drawScene()
-  }
+  // deleteToy(delToy: ToyImage) {
+  //   this.onChangeToysCount(''+delToy.index,'inc')
+  //   this.treeOnCanvas.deleteToyFromTree(delToy)
+  //   // console.log(delToy,'@@')
+  //   // this.toysOnTree = this.toysOnTree.filter(toy => toy.id !== delToy.id)
+  //   this.drawScene()
+  // }
 
   getCurrentToy(x:number,y:number): ToyImage {
    // const { x, y } = this.getCursorPosition(e, this.node)
