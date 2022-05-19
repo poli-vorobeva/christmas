@@ -40,6 +40,7 @@ export class TreeOnCanvas{
             toy.render(ctx)
         })
     }
+    //todo style buttons on gamePage
     getCurrentToy(x:number,y:number){
        return this.toysOnTree.filter(toy => {
             if (x > toy.startX && x < toy.startX + 50

@@ -14,6 +14,9 @@ export class TreePage extends Control {
         console.log(filtersModel)
         this.node.style.backgroundImage = 'url(./public/assets/bgStartPage.jpg)'
         this.chooseSection = new ChooseSection(this.node)
+        this.chooseSection.onSaveImage=()=>{
+            this.canvasSection.saveCanvasImage()
+        }
         this.chooseSection.onOffGirland = () => {
             this.canvasSection.offGirland()
         }
