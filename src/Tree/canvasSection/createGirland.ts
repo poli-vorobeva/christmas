@@ -19,6 +19,7 @@ export class CreateGarland {
     this.newCtx.globalCompositeOperation='destination-over'
   }
   draw(){
+    console.log(this.garlandCoordinates)
     for (let i = 1; i <this.garlandCoordinates.length-1; i++) {
      if (!this.garlandCoordinates[i + 1]) return;
       let startX = this.garlandCoordinates[i].x[0]

@@ -25,6 +25,9 @@ export class TreePage extends Control {
             this.canvasSection.setCanvasTree(tr)
         }
         this.canvasSection = new CanvasSection(this.node)
+        this.canvasSection.onChangeToysCount=(toyIndex:string,action:string)=>{
+            this.toysSection.changeToyCount(toyIndex,action)
+        }
         this.canvasSection.onDroppedToy=(toyIndex)=>{
             //todo dec count in dataobject,cuttentData, tree-toySection
         }

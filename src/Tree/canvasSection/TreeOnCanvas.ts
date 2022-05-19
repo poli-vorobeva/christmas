@@ -4,14 +4,16 @@ import {ICanvasImageObject} from "../../interfaces";
 
 export class TreeOnCanvas{
     toysOnTree: ToyImage[]
+    onChangeToysCount:(index:string,action:string)=>void
     private offsetTreeCanvasWidth: number;
     private offsetTreeCanvasHeight: number;
     private treeCanvasWidth: number;
     private treeCanvasHeight: number;
     private canvasTree: ICanvasImageObject;
     private maskCanvas: MaskCanvas;
+    onGetGarlandCoords:(coords:{ y: number; x: number[] }[])=>void
     onDroppedToy:(toyIndex:string)=>void
-    private coordsForGirland: { y: number; x: number[] }[];
+    //private coordsForGirland: { y: number; x: number[] }[];
     private parentEl: HTMLElement;
     constructor(parentEl:HTMLElement,parentWidth:number,parentHeight:number) {
         this.toysOnTree = []
@@ -44,6 +46,7 @@ export class TreeOnCanvas{
     }
     deleteToyFromTree(delToy:ToyImage){
         this.toysOnTree = this.toysOnTree.filter(toy => toy.id !== delToy.id)
+          this.onChangeToysCount(''+delToy.index,'inc')
     }
     dropOverCanvas(x:number,y:number,eventData:string,
                    parent:HTMLElement,ctx:CanvasRenderingContext2D){
@@ -76,7 +79,10 @@ export class TreeOnCanvas{
             el.x[1] = el.x[1] + Math.floor(this.offsetTreeCanvasWidth)
             return el
         })
-        this.coordsForGirland = newCoords
+        //todo draw by toys sizes
+        //todo count of toys
+        this.onGetGarlandCoords(newCoords)
+       // this.coordsForGirland = newCoords
         this.canvasTree = {
             startX: this.offsetTreeCanvasWidth, startY: this.offsetTreeCanvasHeight, image: treeImage,
             width: this.treeCanvasWidth, height: this.treeCanvasHeight

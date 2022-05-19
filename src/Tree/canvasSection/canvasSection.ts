@@ -9,6 +9,7 @@ import {TreeOnCanvas} from "./TreeOnCanvas";
 
 export class CanvasSection extends Control {
   private canvasSection: Control<HTMLCanvasElement>;
+  onChangeToysCount:(toyIndex:string,action:string)=>void
   private ctx: CanvasRenderingContext2D;
   private canvasBackground: ICanvasImageObject;
   private prevPosX: number;
@@ -40,7 +41,15 @@ export class CanvasSection extends Control {
     this.prevPosX
     //console.log(this.node,'##')
     this.treeOnCanvas=new TreeOnCanvas(this.node,this.canvasWidth,this.canvasHeight)
+    this.treeOnCanvas.onChangeToysCount=(index,action)=>{
+      this.onChangeToysCount(index,action)
+    }
+    this.treeOnCanvas.onGetGarlandCoords=(coords:{ y: number; x: number[] }[])=>{
+      this.garlandCoordinates=coords
+    }
     this.treeOnCanvas.onDroppedToy=(toyIndex)=>{
+      this.onChangeToysCount(toyIndex,'dec')
+      console.log("DROP",toyIndex)
       this.onDroppedToy(toyIndex)
     }
     this.mouseDownHandlerBinded = this.mouseDownHandler.bind(this)
@@ -111,6 +120,7 @@ export class CanvasSection extends Control {
   }
 
   deleteToy(delToy: ToyImage) {
+    this.onChangeToysCount(''+delToy.index,'inc')
     this.treeOnCanvas.deleteToyFromTree(delToy)
     // console.log(delToy,'@@')
     // this.toysOnTree = this.toysOnTree.filter(toy => toy.id !== delToy.id)
@@ -182,10 +192,12 @@ export class CanvasSection extends Control {
   }
 
   turnOnGirland(color: string) {
+    console.log("ON-----",this.garlandCoordinates)
     this.isTurnGirland=true
     this.createGarland = new CreateGarland(this.canvasSection.node.width,
         this.canvasSection.node.height,color)
-    this.createGarland.setCoords(this.coordsForGirland)
+    //console.log(this.coordsForGirland)
+    this.createGarland.setCoords(this.garlandCoordinates)
   }
 
   offGirland() {
